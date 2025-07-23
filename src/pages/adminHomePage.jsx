@@ -74,8 +74,8 @@ export default function AdminHomePage() {
         }).catch(err => ({ data: { success: false, data: [] } }))
       ]);
 
-      // Extract unique patients from appointments
-      const appointments = appointmentsRes.data.success ? appointmentsRes.data.data : [];
+    
+      const  appointments = appointmentsRes.data.success ? appointmentsRes.data.data : [];
       const patientsMap = new Map();
       appointments.forEach(appointment => {
         if (!patientsMap.has(appointment.email)) {
@@ -110,7 +110,7 @@ export default function AdminHomePage() {
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-gray-50">
-      {/* Mobile Header */}
+  
       <div className="md:hidden bg-blue-900 p-4 flex justify-between items-center text-white">
         <div className="flex items-center">
           <h1 className="ml-3 text-lg font-bold">Admin Panel</h1>
@@ -129,7 +129,6 @@ export default function AdminHomePage() {
         </button>
       </div>
 
-      {/* Sidebar */}
       <div className={`${mobileMenuOpen ? 'block' : 'hidden'} md:block w-full md:w-64 bg-blue-900 text-white shadow-xl flex flex-col transition-all duration-300`}>
         <div className="p-6 flex items-center justify-center border-b border-blue-500/20 md:block">
           <div className="flex items-center">
