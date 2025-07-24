@@ -153,7 +153,7 @@ export default function AppointmentDetails() {
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <h2 className="text-lg font-semibold mb-3 text-gray-800">Appointment Details</h2>
                   <div className="space-y-3">
-                    <div className="flex items-start">
+                     <div className="flex items-start">
                       <FaUserMd className="text-blue-500 mt-1 mr-3 flex-shrink-0" />
                       <div>
                         <p className="text-sm text-gray-500">Doctor</p>
@@ -161,6 +161,23 @@ export default function AppointmentDetails() {
                         <p className="text-sm text-blue-600">{appointment.doctor?.specialty?.name || 'Specialist'}</p>
                       </div>
                     </div>
+                    <div className="flex items-start">
+                      <FaHashtag className="text-blue-500 mt-1 mr-3 flex-shrink-0" />
+                      <div>
+                        <p className="text-sm text-gray-500">Appointment Number</p>
+                        <p className="font-medium">{appointment.appointmentNumber || 'N/A'}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start">
+                      <FaHashtag className="text-blue-500 mt-1 mr-3 flex-shrink-0" />
+                      <div>
+                        <p className="text-sm text-gray-500">Queue Number</p>
+                        <p className="font-medium">{appointment.patientQueueNumber || 'N/A'}</p>
+                      </div>
+                    </div>
+                    
+                   
                     
                     <div className="flex items-start">
                       <FaCalendarAlt className="text-blue-500 mt-1 mr-3 flex-shrink-0" />
@@ -251,7 +268,6 @@ export default function AppointmentDetails() {
                 </div>
               </div>
 
-             
               {appointment.notes && (
                 <div className="bg-blue-50 p-4 rounded-lg mb-6">
                   <h2 className="text-md font-semibold mb-2 text-blue-800">Your Notes</h2>
@@ -259,7 +275,6 @@ export default function AppointmentDetails() {
                 </div>
               )}
 
-             
               <div className="bg-blue-50 p-4 rounded-lg mb-6">
                 <h2 className="text-md font-semibold mb-2 text-blue-800">What's Next?</h2>
                 <ul className="space-y-2 list-disc pl-5 text-sm">
