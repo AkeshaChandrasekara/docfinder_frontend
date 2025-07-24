@@ -1,35 +1,17 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import uploadMediaToSupabase from "../../utils/mediaUpload";
 
 export default function EditDoctorForm() {
+  const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const doctor = location.state?.doctor;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [specialties, setSpecialties] = useState([]);
+  const [chanellingCenters, setChanellingCenters] = useState([]);
   const [photoPreview, setPhotoPreview] = useState("");
-
-  useEffect(() => {
-    if (!doctor) {
-      toast.error("No doctor data provided");
-      navigate("/admin/doctors");
-      return;
-    }
-    fetchSpecialties();
-  }, [doctor, navigate]);
-
-  const fetchSpecialties = async () => {
-    try {
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/specialties`);
-      setSpecialties(response.data.data || response.data);
-    } catch (error) {
-      console.error("Error fetching specialties:", error);
-      toast.error("Failed to load specialties");
-    }
-  };
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -43,28 +25,86 @@ export default function EditDoctorForm() {
     photo: null,
     existingPhoto: "",
     hospital: "",
+    chanellingCenter: "",
     availableDays: []
   });
 
   useEffect(() => {
-    if (doctor) {
-      setFormData({
-        firstName: doctor.firstName || "",
-        lastName: doctor.lastName || "",
-        email: doctor.email || "",
-        phone: doctor.phone || "",
-        specialty: doctor.specialty?._id || doctor.specialty || "",
-        qualifications: doctor.qualifications?.join(", ") || "",
-        experience: doctor.experience || "",
-        bio: doctor.bio || "",
-        photo: null,
-        existingPhoto: doctor.photo || "",
-        hospital: doctor.hospital || "",
-        availableDays: doctor.availableDays?.length ? doctor.availableDays : []
-      });
-      setPhotoPreview(doctor.photo || "");
+    fetchSpecialties();
+    fetchChanellingCenters();
+    
+    if (location.state?.doctor) {
+      const doctor = location.state.doctor;
+      initializeFormData(doctor);
+    } else {
+      fetchDoctor();
     }
-  }, [doctor]);
+  }, [id, location.state]);
+
+  const fetchDoctor = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/doctors/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        }
+      );
+      initializeFormData(response.data.data || response.data);
+    } catch (error) {
+      console.error("Error fetching doctor:", error);
+      toast.error("Failed to load doctor data");
+      navigate("/admin/doctors");
+    }
+  };
+
+  const initializeFormData = (doctor) => {
+    setFormData({
+      firstName: doctor.firstName || "",
+      lastName: doctor.lastName || "",
+      email: doctor.email || "",
+      phone: doctor.phone || "",
+      specialty: doctor.specialty?._id || doctor.specialty || "",
+      qualifications: doctor.qualifications?.join(", ") || "",
+      experience: doctor.experience || "",
+      bio: doctor.bio || "",
+      photo: null,
+      existingPhoto: doctor.photo || "",
+      hospital: doctor.hospital || "",
+      chanellingCenter: doctor.chanellingCenter?._id || doctor.chanellingCenter || "",
+      availableDays: doctor.availableDays?.length ? doctor.availableDays : []
+    });
+    setPhotoPreview(doctor.photo || "");
+  };
+
+  const fetchSpecialties = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/specialties`);
+      setSpecialties(response.data.data || response.data);
+    } catch (error) {
+      console.error("Error fetching specialties:", error);
+      toast.error("Failed to load specialties");
+    }
+  };
+
+  const fetchChanellingCenters = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/chanelling-centers`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      setChanellingCenters(response.data.data || response.data);
+    } catch (error) {
+      console.error("Error fetching chanelling centers:", error);
+      toast.error(error.response?.data?.message || "Failed to load chanelling centers");
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -193,6 +233,7 @@ export default function EditDoctorForm() {
         bio: formData.bio.trim(),
         photo: photoUrl,
         hospital: formData.hospital.trim(),
+        chanellingCenter: formData.chanellingCenter || undefined,
         availableDays: formData.availableDays.map(day => ({
           day: day.day,
           slots: day.slots.map(slot => ({
@@ -205,7 +246,7 @@ export default function EditDoctorForm() {
 
       const token = localStorage.getItem("token");
       await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/api/doctors/${doctor._id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/doctors/${id}`,
         doctorData,
         {
           headers: { 
@@ -224,10 +265,6 @@ export default function EditDoctorForm() {
       setIsSubmitting(false);
     }
   };
-
-  if (!doctor) {
-    return null;
-  }
 
   return (
     <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center p-4 z-50">
@@ -249,7 +286,6 @@ export default function EditDoctorForm() {
         <div className="flex-1 overflow-y-auto p-6">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-           
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   First Name *
@@ -367,7 +403,25 @@ export default function EditDoctorForm() {
                 />
               </div>
 
-           
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Chanelling Center
+                </label>
+                <select
+                  name="chanellingCenter"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  value={formData.chanellingCenter}
+                  onChange={handleChange}
+                >
+                  <option value="">Select Chanelling Center</option>
+                  {chanellingCenters.map(center => (
+                    <option key={center._id} value={center._id}>
+                      {center.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Photo

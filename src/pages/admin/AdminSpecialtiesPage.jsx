@@ -150,7 +150,7 @@ export default function AdminSpecialtiesPage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-medium text-gray-900 mb-1">{specialty.name}</h3>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-justify text-gray-500">
                         {specialty.description || 'No description available'}
                       </p>
                     </div>

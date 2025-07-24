@@ -19,7 +19,6 @@ export default function AdminDoctorsPage() {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,10 +41,8 @@ export default function AdminDoctorsPage() {
                   (response?.data?.data ? response.data.data : []);
       
       setDoctors(data);
-      setError(null);
     } catch (error) {
       console.error("Error fetching doctors:", error);
-      setError("Failed to load doctors");
       toast.error("Failed to load doctors");
       setDoctors([]);
     } finally {
@@ -84,24 +81,8 @@ export default function AdminDoctorsPage() {
     );
   }
 
-  if (error) {
-    return (
-      <div className="bg-white rounded-lg shadow-sm p-6 text-center">
-        <h3 className="text-lg font-medium text-red-600 mb-2">Error Loading Doctors</h3>
-        <p className="text-gray-600 mb-4">{error}</p>
-        <button
-          onClick={fetchDoctors}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-        >
-          Try Again
-        </button>
-      </div>
-    );
-  }
-
   return (
     <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-
       <div className="p-6 border-b border-gray-200">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between">
           <div className="flex items-center mb-4 md:mb-0">
@@ -215,13 +196,13 @@ export default function AdminDoctorsPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button
-                        onClick={() => navigate("/admin/doctors/editDoctor", { state: { doctor } })}
-                        className="text-blue-600 hover:text-blue-900 mr-4"
-                        title="Edit"
-                      >
-                        <FaEdit className="h-4 w-4" />
-                      </button>
+                    <button
+  onClick={() => navigate(`/admin/doctors/edit/${doctor._id}`, { state: { doctor } })}
+  className="text-blue-600 hover:text-blue-900 mr-4"
+  title="Edit"
+>
+  <FaEdit className="h-4 w-4" />
+</button>
                       <button
                         onClick={() => handleDelete(doctor._id)}
                         className="text-red-600 hover:text-red-900"

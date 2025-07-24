@@ -370,7 +370,7 @@ export default function AdminHomePage() {
               } />
               <Route path="/doctors" element={<AdminDoctorsPage />} />
               <Route path="/doctors/addDoctor" element={<AddDoctorForm />} />
-              <Route path="/doctors/editDoctor" element={<EditDoctorForm />} />
+             <Route path="/doctors/edit/:id" element={<EditDoctorForm />} />
               <Route path="/specialties" element={<AdminSpecialtiesPage />} />
               <Route path="/specialties/addSpecialty" element={<AddSpecialtyForm />} />
               <Route path="/patients" element={<AdminPatientsPage />} />
