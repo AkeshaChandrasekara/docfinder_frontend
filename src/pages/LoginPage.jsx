@@ -107,7 +107,7 @@ export default function LoginPage() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
             >
-              Sign in to access your dashboard
+              Sign in to access your account
             </motion.p>
           </motion.div>
           <div className="px-8 pb-8 pt-6">

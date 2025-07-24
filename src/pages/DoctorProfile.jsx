@@ -257,7 +257,7 @@ export default function DoctorProfile() {
               <div className="space-y-6">
                 {activeTab === 'about' && (
                   <>
-                    <div className="bg-blue-50 rounded-xl p-5 border border-blue-100">
+                    <div className="bg-white rounded-xl p-5 border">
                       <h3 className="text-lg font-semibold text-gray-900 mb-3">Professional Bio</h3>
                       <p className="text-gray-700 whitespace-pre-line text-sm leading-relaxed">
                         {doctor.bio || "No biography available for this doctor."}
