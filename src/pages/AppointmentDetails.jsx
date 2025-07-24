@@ -14,7 +14,8 @@ import {
   FaHashtag,
   FaHospital,
   FaPrint,
-  FaArrowLeft
+  FaArrowLeft,
+  FaMoneyCheck
 } from 'react-icons/fa';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -232,7 +233,7 @@ export default function AppointmentDetails() {
                     
                     <div className="flex items-start">
                       {appointment.paymentMethod === 'payAtClinic' ? (
-                        <FaMoneyBillWave className="text-blue-500 mt-1 mr-3 flex-shrink-0" /> 
+                        <FaMoneyCheck className="text-blue-500 mt-1 mr-3 flex-shrink-0" /> 
                       ) : (
                         <FaCreditCard className="text-blue-500 mt-1 mr-3 flex-shrink-0" /> 
                       )}

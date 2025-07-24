@@ -13,7 +13,9 @@ import {
   FaMoneyBillWave,
   FaSpinner,
   FaBuilding,
-  FaNotesMedical
+  FaNotesMedical,
+  FaMoneyCheck,
+  FaMoneyBillAlt
 } from 'react-icons/fa';
 import { GiMedicines } from 'react-icons/gi';
 import { useParams, Link, useNavigate } from 'react-router-dom';
@@ -281,7 +283,7 @@ export default function BookingPage() {
 
                   <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                     <h3 className="font-semibold text-blue-800 mb-1 flex items-center text-sm">
-                      <FaMoneyBillWave className="text-blue-600 mr-2 text-sm" /> Consultation Fee
+                      <FaMoneyCheck className="text-blue-600 mr-2 text-sm" /> Consultation Fee
                     </h3>
                     <p className="text-2xl font-bold text-gray-900">Rs.{doctor.consultationFee || 120}</p>
                     
@@ -305,7 +307,7 @@ export default function BookingPage() {
                         </div>
                         <div className="flex items-center p-2 rounded-md hover:bg-blue-100 transition-colors cursor-pointer">
                           <input
-                            type="radio"
+                            type="radio" 
                             id="payOnline"
                             name="paymentMethod"
                             value="payOnline"
@@ -416,7 +418,7 @@ export default function BookingPage() {
                             <input
                               type="email"
                               className="w-full p-2 text-sm border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                              placeholder="john@example.com"
+                              placeholder="email@example.com"
                               value={email}
                               onChange={(e) => setEmail(e.target.value)}
                               required
