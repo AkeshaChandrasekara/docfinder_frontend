@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { FaSearch, FaClinicMedical, FaArrowRight,FaBriefcaseMedical} from 'react-icons/fa';
+import { FaSearch, FaClinicMedical, FaArrowRight, FaBriefcaseMedical } from 'react-icons/fa';
 import Header from '../components/header';
 import Footer from '../components/footer';
 import { toast } from 'react-hot-toast';
@@ -76,7 +76,6 @@ export default function SpecialitiesPage() {
             </p>
           </div>
 
-          {/* Search Bar */}
           <div className="relative mb-12 max-w-2xl mx-auto">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <FaSearch className="text-gray-400" />
@@ -90,33 +89,42 @@ export default function SpecialitiesPage() {
             />
           </div>
 
-          {/* Specialties Grid */}
           {filteredSpecialties.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredSpecialties.map(specialty => (
                 <div 
                   key={specialty._id} 
-                  className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                  className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full"
                 >
-                  <div className="p-8 flex flex-col items-center">
+                  <div className="p-8 flex flex-col items-center flex-grow">
                     <div className="bg-blue-100 p-4 rounded-full mb-4">
                       <FaBriefcaseMedical className="text-4xl text-blue-600" />
                     </div>
                     <h3 className="text-xl font-bold text-center text-gray-900 mb-2">{specialty.name}</h3>
-                    <p className="text-gray-600 text-center mb-6">
+                    <p className="text-gray-600 text-justify mb-6 flex-grow">
                       {specialty.description || 'Expert care in this medical specialty'}
                     </p>
                     <Link 
                       to={`/doctors?specialty=${specialty._id}`}
-                      className="flex items-center text-blue-600 hover:text-blue-800 font-medium"
+                      className="flex items-center text-blue-600 hover:text-blue-800 font-medium mt-auto"
                     >
                       View Doctors <FaArrowRight className="ml-2" />
                     </Link>
                   </div>
                   <div className="bg-gray-50 px-6 py-4">
                     <div className="flex justify-between text-sm text-gray-500">
-                      <span>24/7 Availability</span>
-                      <span>Expert Care</span>
+                      <span className="flex items-center">
+                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        24/7 Availability
+                      </span>
+                      <span className="flex items-center">
+                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                        Expert Care
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -129,7 +137,6 @@ export default function SpecialitiesPage() {
             </div>
           )}
 
-          {/* Call to Action */}
           <div className="mt-16 bg-blue-600 rounded-xl p-8 text-center text-white">
             <h2 className="text-2xl font-bold mb-4">Can't find what you're looking for?</h2>
             <p className="mb-6 max-w-2xl mx-auto">Our patient care team is available 24/7 to help you find the right specialist.</p>
