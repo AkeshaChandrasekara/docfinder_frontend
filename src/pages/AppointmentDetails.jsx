@@ -129,7 +129,7 @@ export default function AppointmentDetails() {
       <main className="flex-grow bg-gray-50 py-6">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="bg-gradient-to-r from-blue-600 to-blue-500 p-6 text-white">
+            <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-6 text-white">
               <div className="flex items-center justify-between">
                 <Link 
                   to="/my-appointments" 
