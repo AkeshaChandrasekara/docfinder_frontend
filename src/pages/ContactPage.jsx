@@ -210,17 +210,7 @@ export default function ContactPage() {
                     <p className="text-gray-600">support@docfinder.lk</p>
                   </div>
                 </div>
-                
-                <div className="flex items-start">
-                  <div className="bg-blue-100 p-3 rounded-full mr-4 text-blue-600">
-                    <FaMapMarkerAlt className="text-lg" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-1">Address</h3>
-                    <p className="text-gray-600">123 Medical Center Drive</p>
-                    <p className="text-gray-600">Colombo 05, Sri Lanka</p>
-                  </div>
-                </div>
+              
                 
                 <div className="flex items-start">
                   <div className="bg-blue-100 p-3 rounded-full mr-4 text-blue-600">
