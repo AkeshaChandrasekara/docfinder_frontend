@@ -86,7 +86,6 @@ export default function AdminHomePage() {
         }
       });
 
-      // Prepare recent activities from appointments
       const recentAppointments = appointments
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
         .slice(0, 5)
@@ -124,7 +123,7 @@ export default function AdminHomePage() {
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-gray-50">
-      {/* Mobile Header */}
+
       <div className="md:hidden bg-blue-900 p-4 flex justify-between items-center text-white">
         <div className="flex items-center">
           <h1 className="ml-3 text-lg font-bold">Admin Panel</h1>
@@ -143,7 +142,6 @@ export default function AdminHomePage() {
         </button>
       </div>
 
-      {/* Sidebar */}
       <div className={`${mobileMenuOpen ? 'block' : 'hidden'} md:block w-full md:w-64 bg-blue-900 text-white shadow-xl flex flex-col transition-all duration-300`}>
         <div className="p-6 flex items-center justify-center border-b border-blue-500/20 md:block">
           <div className="flex items-center">
@@ -255,7 +253,6 @@ export default function AdminHomePage() {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <div className="bg-white shadow-sm p-4 flex justify-between items-center">
           <h2 className="text-lg md:text-xl font-semibold text-gray-800">
