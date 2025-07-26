@@ -13,7 +13,7 @@ export default function ForgotPasswordPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     try {
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/forgot-password`, { email });
       toast.success('Password reset link sent to your email');
@@ -27,7 +27,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="flex h-screen w-full items-center justify-center bg-white p-4">
-      <motion.div 
+      <motion.div
         className="w-full max-w-md relative bg-white rounded-3xl shadow-xl overflow-hidden"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -35,7 +35,7 @@ export default function ForgotPasswordPage() {
       >
         <div className="absolute -top-32 -right-32 w-64 h-64 rounded-full bg-blue-500"></div>
         <div className="relative z-10">
-          <motion.div 
+          <motion.div
             className="pt-8 px-8 text-center"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -48,14 +48,14 @@ export default function ForgotPasswordPage() {
             >
               <div className="relative">
                 <div className="absolute -inset-2 bg-blue-200/30 rounded-full blur-md"></div>
-                <img 
+                <img
                   src="/component3.png"
                   className="relative w-20 h-20 drop-shadow-lg"
                   alt="Logo"
                 />
               </div>
             </motion.div>
-            <motion.h1 
+            <motion.h1
               className="text-2xl font-bold text-gray-800"
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
@@ -63,7 +63,7 @@ export default function ForgotPasswordPage() {
             >
               Forgot <span className="text-blue-600">Password</span>
             </motion.h1>
-            <motion.p 
+            <motion.p
               className="text-gray-500 mt-1 text-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -120,7 +120,7 @@ export default function ForgotPasswordPage() {
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.3 }}
-                  whileHover={{ 
+                  whileHover={{
                     scale: 1.01,
                     boxShadow: "0 4px 12px rgba(37, 99, 235, 0.3)"
                   }}
@@ -154,7 +154,7 @@ export default function ForgotPasswordPage() {
               </motion.div>
             )}
 
-            <motion.div 
+            <motion.div
               className="text-center text-sm pt-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
