@@ -385,7 +385,7 @@ export default function BookingPage() {
                     <div className="md:col-span-2 bg-white p-4 rounded-lg shadow-xs border border-gray-200">
                       <h3 className="text-md font-medium text-gray-900 mb-3 flex items-center">
                         <FaUser className="text-blue-500 mr-2 text-lg" />
-                        Your Information
+                        Patient Information
                       </h3>
                       <div className="space-y-3">
                         <div>

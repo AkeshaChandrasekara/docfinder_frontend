@@ -197,7 +197,7 @@ export default function BookingConfirmation() {
 
                
                 <div className="bg-gray-50 p-4 rounded-lg">
-                  <h2 className="text-lg font-semibold mb-3 text-gray-800">Your Information</h2>
+                  <h2 className="text-lg font-semibold mb-3 text-gray-800">Patient Information</h2>
                   <div className="space-y-3">
                     <div className="flex items-start">
                       <div className="text-blue-500 mt-1 mr-3 w-4 flex-shrink-0">
