@@ -20,7 +20,7 @@ import AddChanellingCenterForm from "./admin/AddChannelingCenterForm";
 import EditChanellingCenterForm from "./admin/EditChanellingCenterForm";
 
 export default function AdminHomePage() {
-  const [user, setUser] = useState(null);
+    const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState("dashboard");
   const [stats, setStats] = useState({
     doctors: 0,
@@ -28,6 +28,7 @@ export default function AdminHomePage() {
     patients: 0,
     appointments: 0
   });
+  const [recentActivities, setRecentActivities] = useState([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -74,8 +75,7 @@ export default function AdminHomePage() {
         }).catch(err => ({ data: { success: false, data: [] } }))
       ]);
 
-    
-      const  appointments = appointmentsRes.data.success ? appointmentsRes.data.data : [];
+      const appointments = appointmentsRes.data.success ? appointmentsRes.data.data : [];
       const patientsMap = new Map();
       appointments.forEach(appointment => {
         if (!patientsMap.has(appointment.email)) {
@@ -86,12 +86,26 @@ export default function AdminHomePage() {
         }
       });
 
+      // Prepare recent activities from appointments
+      const recentAppointments = appointments
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(0, 5)
+        .map(appointment => ({
+          type: 'appointment',
+          title: `New appointment booked`,
+          description: `${appointment.patientName} - ${appointment.time}`,
+          createdAt: appointment.createdAt,
+          icon: <BsCalendarEvent className="text-sm md:text-base" />
+        }));
+
       setStats({
         doctors: doctorsRes.data.success ? doctorsRes.data.data.length : 0,
         specialties: specialtiesRes.data.success ? specialtiesRes.data.data.length : 0,
         patients: patientsMap.size,
         appointments: appointments.length
       });
+
+      setRecentActivities(recentAppointments);
     } catch (error) {
       console.error("Error fetching stats:", error);
       toast.error("Failed to load dashboard statistics");
@@ -110,7 +124,7 @@ export default function AdminHomePage() {
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-gray-50">
-  
+      {/* Mobile Header */}
       <div className="md:hidden bg-blue-900 p-4 flex justify-between items-center text-white">
         <div className="flex items-center">
           <h1 className="ml-3 text-lg font-bold">Admin Panel</h1>
@@ -129,6 +143,7 @@ export default function AdminHomePage() {
         </button>
       </div>
 
+      {/* Sidebar */}
       <div className={`${mobileMenuOpen ? 'block' : 'hidden'} md:block w-full md:w-64 bg-blue-900 text-white shadow-xl flex flex-col transition-all duration-300`}>
         <div className="p-6 flex items-center justify-center border-b border-blue-500/20 md:block">
           <div className="flex items-center">
@@ -240,6 +255,7 @@ export default function AdminHomePage() {
         </div>
       </div>
 
+      {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <div className="bg-white shadow-sm p-4 flex justify-between items-center">
           <h2 className="text-lg md:text-xl font-semibold text-gray-800">
@@ -333,41 +349,30 @@ export default function AdminHomePage() {
                     <div className="bg-gray-50 rounded-lg p-4 md:p-6">
                       <h4 className="text-base md:text-lg font-semibold text-gray-800 mb-4">Recent Activity</h4>
                       <div className="space-y-4">
-                        <div className="flex items-start">
-                          <div className="flex-shrink-0 h-8 w-8 md:h-10 md:w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-                            <FaUserMd className="text-sm md:text-base" />
-                          </div>
-                          <div className="ml-3 md:ml-4">
-                            <p className="text-xs md:text-sm font-medium text-gray-900">New doctor added</p>
-                            <p className="text-xs md:text-sm text-gray-500">Dr. John Smith, Cardiology</p>
-                            <p className="text-xs text-gray-400 mt-1">2 hours ago</p>
-                          </div>
-                        </div>
-                        <div className="flex items-start">
-                          <div className="flex-shrink-0 h-8 w-8 md:h-10 md:w-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
-                            <FaUserInjured className="text-sm md:text-base" />
-                          </div>
-                          <div className="ml-3 md:ml-4">
-                            <p className="text-xs md:text-sm font-medium text-gray-900">New patient registered</p>
-                            <p className="text-xs md:text-sm text-gray-500">patient@example.com</p>
-                            <p className="text-xs text-gray-400 mt-1">5 hours ago</p>
-                          </div>
-                        </div>
-                        <div className="flex items-start">
-                          <div className="flex-shrink-0 h-8 w-8 md:h-10 md:w-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
-                            <MdMedicalServices className="text-sm md:text-base" />
-                          </div>
-                          <div className="ml-3 md:ml-4">
-                            <p className="text-xs md:text-sm font-medium text-gray-900">New specialty created</p>
-                            <p className="text-xs md:text-sm text-gray-500">Neurology specialty added</p>
-                            <p className="text-xs text-gray-400 mt-1">1 day ago</p>
-                          </div>
-                        </div>
+                        {recentActivities.length > 0 ? (
+                          recentActivities.map((activity, index) => (
+                            <div key={index} className="flex items-start">
+                              <div className="flex-shrink-0 h-8 w-8 md:h-10 md:w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                                {activity.icon}
+                              </div>
+                              <div className="ml-3 md:ml-4">
+                                <p className="text-xs md:text-sm font-medium text-gray-900">{activity.title}</p>
+                                <p className="text-xs md:text-sm text-gray-500">{activity.description}</p>
+                                <p className="text-xs text-gray-400 mt-1">
+                                  {new Date(activity.createdAt).toLocaleString()}
+                                </p>
+                              </div>
+                            </div>
+                          ))
+                        ) : (
+                          <p className="text-sm text-gray-500">No recent activities found</p>
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
               } />
+ 
               <Route path="/doctors" element={<AdminDoctorsPage />} />
               <Route path="/doctors/addDoctor" element={<AddDoctorForm />} />
              <Route path="/doctors/edit/:id" element={<EditDoctorForm />} />
