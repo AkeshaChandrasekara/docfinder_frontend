@@ -78,7 +78,7 @@ export default function BookingConfirmation() {
       <div className="flex flex-col min-h-screen">
         <Header />
         <main className="flex-grow flex items-center justify-center">
-          <div className="text-center max-w-md p-6 bg-white rounded-lg shadow-md">
+          <div className="text-center max-w-md p-4 sm:p-6 bg-white rounded-lg shadow-md">
             <h2 className="text-xl font-bold text-red-600 mb-4">Error Loading Appointment</h2>
             <p className="text-gray-700 mb-6">{error}</p>
             <Link 
@@ -99,7 +99,7 @@ export default function BookingConfirmation() {
       <div className="flex flex-col min-h-screen">
         <Header />
         <main className="flex-grow flex items-center justify-center">
-          <div className="text-center max-w-md p-6 bg-white rounded-lg shadow-md">
+          <div className="text-center max-w-md p-4 sm:p-6 bg-white rounded-lg shadow-md">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Appointment Not Found</h2>
             <p className="text-gray-700 mb-6">The requested appointment could not be found.</p>
             <Link 
@@ -118,55 +118,52 @@ export default function BookingConfirmation() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-grow bg-gray-50 py-6">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-6 text-white text-center">
+      <main className="flex-grow bg-gray-50 py-4 sm:py-6">
+        <div className="max-w-4xl mx-auto px-3 sm:px-4 lg:px-6">
+          <div className="bg-white rounded-lg sm:rounded-xl shadow-md sm:shadow-lg overflow-hidden">
+            <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-4 sm:p-6 text-white text-center">
               <div className="flex justify-center mb-3">
-                <FaCheckCircle className="h-12 w-12" />
+                <FaCheckCircle className="h-10 w-10 sm:h-12 sm:w-12" />
               </div>
-              <h1 className="text-2xl font-bold mb-2">Appointment Confirmed!</h1>
-              <p className="">Your appointment has been successfully booked</p>
+              <h1 className="text-xl sm:text-2xl font-bold mb-2">Appointment Confirmed!</h1>
+              <p className="text-sm sm:text-base">Your appointment has been successfully booked</p>
               
-             
-              <div className="mt-6 grid grid-cols-2 gap-4">
-                <div className="bg-white/10 p-4 rounded-lg">
-                  <div className="flex items-center justify-center mb-2">
-                    <FaHashtag className="mr-2" />
-                    <span className="font-medium">Appointment Number</span>
+              <div className="mt-4 sm:mt-6 grid grid-cols-2 gap-3 sm:gap-4">
+                <div className="bg-white/10 p-3 sm:p-4 rounded-lg">
+                  <div className="flex items-center justify-center mb-1 sm:mb-2">
+                    <FaHashtag className="mr-1 sm:mr-2" />
+                    <span className="font-medium text-sm sm:text-base">Appointment Number</span>
                   </div>
-                  <p className="text-xl font-bold">{appointment.appointmentNumber}</p>
+                  <p className="text-lg sm:text-xl font-bold">{appointment.appointmentNumber}</p>
                 </div>
-                <div className="bg-white/10 p-4 rounded-lg">
-                  <div className="flex items-center justify-center mb-2">
-                    <FaHashtag className="mr-2" />
-                    <span className="font-medium">Your Queue Number</span>
+                <div className="bg-white/10 p-3 sm:p-4 rounded-lg">
+                  <div className="flex items-center justify-center mb-1 sm:mb-2">
+                    <FaHashtag className="mr-1 sm:mr-2" />
+                    <span className="font-medium text-sm sm:text-base">Your Queue Number</span>
                   </div>
-                  <p className="text-xl font-bold">{appointment.patientQueueNumber}</p>
+                  <p className="text-lg sm:text-xl font-bold">{appointment.patientQueueNumber}</p>
                 </div>
               </div>
             </div>
 
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-           
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h2 className="text-lg font-semibold mb-3 text-gray-800">Appointment Details</h2>
-                  <div className="space-y-3">
+            <div className="p-4 sm:p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
+                <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                  <h2 className="text-md sm:text-lg font-semibold mb-2 sm:mb-3 text-gray-800">Appointment Details</h2>
+                  <div className="space-y-2 sm:space-y-3">
                     <div className="flex items-start">
-                      <FaUserMd className="text-blue-500 mt-1 mr-3 flex-shrink-0" />
+                      <FaUserMd className="text-blue-500 mt-0.5 sm:mt-1 mr-2 sm:mr-3 flex-shrink-0" />
                       <div>
-                        <p className="text-sm text-gray-500">Doctor</p>
-                        <p className="font-medium">Dr. {appointment.doctor?.firstName} {appointment.doctor?.lastName}</p>
-                        <p className="text-sm text-blue-600">{appointment.doctor?.specialty?.name || 'Specialist'}</p>
+                        <p className="text-xs sm:text-sm text-gray-500">Doctor</p>
+                        <p className="font-medium text-sm sm:text-base">Dr. {appointment.doctor?.firstName} {appointment.doctor?.lastName}</p>
+                        <p className="text-xs sm:text-sm text-blue-600">{appointment.doctor?.specialty?.name || 'Specialist'}</p>
                       </div>
                     </div>
-                    
                     <div className="flex items-start">
-                      <FaCalendarAlt className="text-blue-500 mt-1 mr-3 flex-shrink-0" />
+                      <FaCalendarAlt className="text-blue-500 mt-0.5 sm:mt-1 mr-2 sm:mr-3 flex-shrink-0" />
                       <div>
-                        <p className="text-sm text-gray-500">Date</p>
-                        <p className="font-medium">
+                        <p className="text-xs sm:text-sm text-gray-500">Date</p>
+                        <p className="font-medium text-sm sm:text-base">
                           {new Date(appointment.date).toLocaleDateString('en-US', { 
                             weekday: 'long', 
                             year: 'numeric', 
@@ -176,71 +173,65 @@ export default function BookingConfirmation() {
                         </p>
                       </div>
                     </div>
-                    
                     <div className="flex items-start">
-                      <FaClock className="text-blue-500 mt-1 mr-3 flex-shrink-0" />
+                      <FaClock className="text-blue-500 mt-0.5 sm:mt-1 mr-2 sm:mr-3 flex-shrink-0" />
                       <div>
-                        <p className="text-sm text-gray-500">Time</p>
-                        <p className="font-medium">{appointment.time}</p>
+                        <p className="text-xs sm:text-sm text-gray-500">Time</p>
+                        <p className="font-medium text-sm sm:text-base">{appointment.time}</p>
                       </div>
                     </div>
-                    
                     <div className="flex items-start">
-                      <FaMapMarkerAlt className="text-blue-500 mt-1 mr-3 flex-shrink-0" />
+                      <FaMapMarkerAlt className="text-blue-500 mt-0.5 sm:mt-1 mr-2 sm:mr-3 flex-shrink-0" />
                       <div>
-                        <p className="text-sm text-gray-500">Location</p>
-                        <p className="font-medium">Asiri Hospitals</p>
+                        <p className="text-xs sm:text-sm text-gray-500">Location</p>
+                        <p className="font-medium text-sm sm:text-base">Asiri Hospitals</p>
                       </div>
                     </div>
                   </div>
                 </div>
 
-               
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h2 className="text-lg font-semibold mb-3 text-gray-800">Patient Information</h2>
-                  <div className="space-y-3">
+                <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                  <h2 className="text-md sm:text-lg font-semibold mb-2 sm:mb-3 text-gray-800">Patient Information</h2>
+                  <div className="space-y-2 sm:space-y-3">
                     <div className="flex items-start">
-                      <div className="text-blue-500 mt-1 mr-3 w-4 flex-shrink-0">
+                      <div className="text-blue-500 mt-0.5 sm:mt-1 mr-2 sm:mr-3 w-4 flex-shrink-0">
                         <FaUser />
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">Patient Name</p>
-                        <p className="font-medium">{appointment.patientName}</p>
+                        <p className="text-xs sm:text-sm text-gray-500">Patient Name</p>
+                        <p className="font-medium text-sm sm:text-base">{appointment.patientName}</p>
                       </div>
                     </div>
-                    
                     <div className="flex items-start">
-                      <div className="text-blue-500 mt-1 mr-3 w-4 flex-shrink-0">
+                      <div className="text-blue-500 mt-0.5 sm:mt-1 mr-2 sm:mr-3 w-4 flex-shrink-0">
                         <FaPhone />
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">Phone Number</p>
-                        <p className="font-medium">{appointment.phoneNumber}</p>
+                        <p className="text-xs sm:text-sm text-gray-500">Phone Number</p>
+                        <p className="font-medium text-sm sm:text-base">{appointment.phoneNumber}</p>
                       </div>
                     </div>
-                    
                     <div className="flex items-start">
-                      <div className="text-blue-500 mt-1 mr-3 w-4 flex-shrink-0">
+                      <div className="text-blue-500 mt-0.5 sm:mt-1 mr-2 sm:mr-3 w-4 flex-shrink-0">
                         <FaEnvelope />
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">Email</p>
-                        <p className="font-medium">{appointment.email}</p>
+                        <p className="text-xs sm:text-sm text-gray-500">Email</p>
+                        <p className="font-medium text-sm sm:text-base">{appointment.email}</p>
                       </div>
                     </div>
-                    
                     <div className="flex items-start">
                       {appointment.paymentMethod === 'payAtClinic' ? (
-                        <FaMoneyCheck className="text-blue-500 mt-1 mr-3 flex-shrink-0" /> 
+                        <FaMoneyCheck className="text-blue-500 mt-0.5 sm:mt-1 mr-2 sm:mr-3 flex-shrink-0" /> 
                       ) : (
-                        <FaCreditCard className="text-blue-500 mt-1 mr-3 flex-shrink-0" /> 
+                        <FaCreditCard className="text-blue-500 mt-0.5 sm:mt-1 mr-2 sm:mr-3 flex-shrink-0" /> 
                       )}
                       <div>
-                        <p className="text-sm text-gray-500">Payment Method</p>
-                        <p className="font-medium">
+                        <p className="text-xs sm:text-sm text-gray-500">Payment Method</p>
+                        <p className="font-medium text-sm sm:text-base">
                           {appointment.paymentMethod === 'payAtClinic' ? 'Pay at Clinic' : 'Paid Online'}
                         </p>
-                        <p className="text-sm">
+                        <p className="text-xs sm:text-sm">
                           Rs.{appointment.consultationFee || 120} consultation fee
                         </p>
                       </div>
@@ -250,15 +241,15 @@ export default function BookingConfirmation() {
               </div>
 
               {appointment.notes && (
-                <div className="bg-blue-50 p-4 rounded-lg mb-6">
-                  <h2 className="text-md font-semibold mb-2 text-blue-800">Your Notes</h2>
-                  <p className="text-gray-700 whitespace-pre-line text-sm">{appointment.notes}</p>
+                <div className="bg-blue-50 p-3 sm:p-4 rounded-lg mb-4 sm:mb-6">
+                  <h2 className="text-sm sm:text-md font-semibold mb-2 text-blue-800">Your Notes</h2>
+                  <p className="text-gray-700 whitespace-pre-line text-xs sm:text-sm">{appointment.notes}</p>
                 </div>
               )}
 
-              <div className="bg-blue-50 p-4 rounded-lg mb-6">
-                <h2 className="text-md font-semibold mb-2 text-blue-800">What's Next?</h2>
-                <ul className="space-y-2 list-disc pl-5 text-sm">
+              <div className="bg-blue-50 p-3 sm:p-4 rounded-lg mb-4 sm:mb-6">
+                <h2 className="text-sm sm:text-md font-semibold mb-2 text-blue-800">What's Next?</h2>
+                <ul className="space-y-1 sm:space-y-2 list-disc pl-4 sm:pl-5 text-xs sm:text-sm">
                   <li className="text-gray-700">
                     {appointment.paymentMethod === 'payAtClinic' ? (
                       <>You'll pay the consultation fee when you arrive at the clinic.</>
@@ -280,23 +271,22 @@ export default function BookingConfirmation() {
                 </ul>
               </div>
 
-          
-              <div className="flex flex-col sm:flex-row justify-center gap-3">
+              <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-3">
                 <Link 
                   to="/my-appointments" 
-                  className="inline-flex justify-center items-center px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium shadow-md hover:shadow-lg transition-all"
+                  className="inline-flex justify-center items-center px-4 py-1.5 sm:px-5 sm:py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium shadow-md hover:shadow-lg transition-all text-sm sm:text-base"
                 >
                   View My Appointments
                 </Link>
                 <Link 
                   to="/doctors" 
-                  className="inline-flex justify-center items-center px-5 py-2 bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 rounded-lg font-medium shadow-md hover:shadow-lg transition-all"
+                  className="inline-flex justify-center items-center px-4 py-1.5 sm:px-5 sm:py-2 bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 rounded-lg font-medium shadow-md hover:shadow-lg transition-all text-sm sm:text-base"
                 >
                   Book Another Appointment
                 </Link>
                 <Link 
                   to="/" 
-                  className="inline-flex justify-center items-center px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg font-medium shadow-md hover:shadow-lg transition-all"
+                  className="inline-flex justify-center items-center px-4 py-1.5 sm:px-5 sm:py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg font-medium shadow-md hover:shadow-lg transition-all text-sm sm:text-base"
                 >
                   Back to Home
                 </Link>
