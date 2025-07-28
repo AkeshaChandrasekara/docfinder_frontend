@@ -181,7 +181,7 @@ export default function BookingPage() {
       <div className="flex flex-col min-h-screen bg-gray-50">
         <Header />
         <main className="flex-grow flex items-center justify-center">
-          <div className="text-center max-w-md p-6 bg-white rounded-xl shadow-md border border-gray-100">
+          <div className="text-center max-w-md p-4 sm:p-6 bg-white rounded-lg shadow-md border border-gray-100">
             <h2 className="text-xl font-bold text-red-600 mb-4">Error Loading Doctor</h2>
             <p className="text-gray-700 mb-6">{error}</p>
             <Link 
@@ -202,7 +202,7 @@ export default function BookingPage() {
       <div className="flex flex-col min-h-screen bg-gray-50">
         <Header />
         <main className="flex-grow flex items-center justify-center">
-          <div className="text-center max-w-md p-6 bg-white rounded-xl shadow-md border border-gray-100">
+          <div className="text-center max-w-md p-4 sm:p-6 bg-white rounded-lg shadow-md border border-gray-100">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Doctor Not Found</h2>
             <p className="text-gray-700 mb-6">The requested doctor profile could not be found.</p>
             <Link 
@@ -221,32 +221,31 @@ export default function BookingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <Header />
-      <main className="flex-grow py-6">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
+      <main className="flex-grow py-4 sm:py-6">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-6">
+          <div className="bg-white rounded-lg sm:rounded-xl shadow-sm sm:shadow-md overflow-hidden border border-gray-200">
 
-            <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-6 text-white">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-4 sm:p-6 text-white">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                 <Link 
                   to={`/doctors/${id}`} 
-                  className="flex items-center text-white hover:text-blue-200 transition-colors text-sm"
+                  className="flex items-center text-white hover:text-blue-200 transition-colors text-xs sm:text-sm"
                 >
-                  <FaArrowLeft className="mr-2" /> Back to Doctor Profile
+                  <FaArrowLeft className="mr-1 sm:mr-2" /> Back to Doctor Profile
                 </Link>
-                <h1 className="text-2xl font-bold text-center sm:text-left">Book Your Appointment</h1>
+                <h1 className="text-xl sm:text-2xl font-bold text-center sm:text-left">Book Your Appointment</h1>
                 <div className="hidden sm:block w-8"></div>
               </div>
             </div>
 
             <div className="md:flex">
-   
-              <div className="md:w-1/3 p-6 border-r border-gray-200 bg-gradient-to-b from-blue-50 to-white">
-                <div className="flex items-center mb-6">
+              <div className="md:w-1/3 p-4 sm:p-6 border-r border-gray-200 bg-gradient-to-b from-blue-50 to-white">
+                <div className="flex items-center mb-4 sm:mb-6">
                   <div className="relative">
                     <img 
                       src={doctor.photo || 'https://cdn-icons-png.flaticon.com/512/8815/8815112.png'} 
                       alt={`${doctor.firstName} ${doctor.lastName}`}
-                      className="w-16 h-16 rounded-full object-cover border-4 border-white shadow-md"
+                      className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-4 border-white shadow-md"
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src = 'https://cdn-icons-png.flaticon.com/512/8815/8815112.png';
@@ -258,39 +257,37 @@ export default function BookingPage() {
                     </div>
                   </div>
                   <div className="ml-3">
-                    <h2 className="text-lg font-bold text-gray-900">Dr. {doctor.firstName} {doctor.lastName}</h2>
-                    <p className="text-blue-600 text-sm font-medium">{doctor.specialty?.name || 'Specialist'}</p>
+                    <h2 className="text-md sm:text-lg font-bold text-gray-900">Dr. {doctor.firstName} {doctor.lastName}</h2>
+                    <p className="text-blue-600 text-xs sm:text-sm font-medium">{doctor.specialty?.name || 'Specialist'}</p>
                     <p className="text-gray-500 text-xs">{doctor.experience}+ years experience</p>
                   </div>
                 </div>
 
-                <div className="space-y-4">
-                  <div className="bg-white p-4 rounded-lg shadow-xs border border-gray-200">
-                    <h3 className="font-semibold text-gray-900 mb-2 flex items-center text-sm">
-                      <FaHospital className="text-blue-500 mr-2 text-sm" /> Hospital
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="bg-white p-3 sm:p-4 rounded-lg shadow-xs border border-gray-200">
+                    <h3 className="font-semibold text-gray-900 mb-1 sm:mb-2 flex items-center text-xs sm:text-sm">
+                      <FaHospital className="text-blue-500 mr-2 text-xs sm:text-sm" /> Hospital
                     </h3>
-                    <p className="text-gray-700 text-sm">{doctor.hospital || 'Not specified'}</p>
+                    <p className="text-gray-700 text-xs sm:text-sm">{doctor.hospital || 'Not specified'}</p>
                   </div>
 
-                  <div className="bg-white p-4 rounded-lg shadow-xs border border-gray-200">
-                    <h3 className="font-semibold text-gray-900 mb-2 flex items-center text-sm">
-                      <FaBuilding className="text-blue-500 mr-2 text-sm" /> Channeling Center
+                  <div className="bg-white p-3 sm:p-4 rounded-lg shadow-xs border border-gray-200">
+                    <h3 className="font-semibold text-gray-900 mb-1 sm:mb-2 flex items-center text-xs sm:text-sm">
+                      <FaBuilding className="text-blue-500 mr-2 text-xs sm:text-sm" /> Channeling Center
                     </h3>
-                    <p className="text-gray-700 text-sm">Asiri Hospitals</p>
+                    <p className="text-gray-700 text-xs sm:text-sm">Asiri Hospitals</p>
                   </div>
 
-                 
-
-                  <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                    <h3 className="font-semibold text-blue-800 mb-1 flex items-center text-sm">
-                      <FaMoneyCheck className="text-blue-600 mr-2 text-sm" /> Consultation Fee
+                  <div className="bg-blue-50 p-3 sm:p-4 rounded-lg border border-blue-200">
+                    <h3 className="font-semibold text-blue-800 mb-1 flex items-center text-xs sm:text-sm">
+                      <FaMoneyCheck className="text-blue-600 mr-2 text-xs sm:text-sm" /> Consultation Fee
                     </h3>
-                    <p className="text-2xl font-bold text-gray-900">Rs.{doctor.consultationFee || 120}</p>
+                    <p className="text-xl sm:text-2xl font-bold text-gray-900">Rs.{doctor.consultationFee || 120}</p>
                     
-                    <div className="mt-3 space-y-2">
-                      <h4 className="font-medium text-blue-800 mb-1 text-sm">Payment Method</h4>
+                    <div className="mt-2 sm:mt-3 space-y-1 sm:space-y-2">
+                      <h4 className="font-medium text-blue-800 mb-1 text-xs sm:text-sm">Payment Method</h4>
                       <div className="space-y-1">
-                        <div className="flex items-center p-2 rounded-md hover:bg-blue-100 transition-colors cursor-pointer">
+                        <div className="flex items-center p-1.5 sm:p-2 rounded-md hover:bg-blue-100 transition-colors cursor-pointer">
                           <input
                             type="radio"
                             id="payAtClinic"
@@ -298,14 +295,14 @@ export default function BookingPage() {
                             value="payAtClinic"
                             checked={paymentMethod === 'payAtClinic'}
                             onChange={() => setPaymentMethod('payAtClinic')}
-                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                            className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
                           />
                           <label htmlFor="payAtClinic" className="ml-2 text-xs font-medium text-gray-700 flex items-center">
-                            <FaHospital className="mr-1 text-green-500 text-sm" />
+                            <FaHospital className="mr-1 text-green-500 text-xs sm:text-sm" />
                             Pay at Clinic
                           </label>
                         </div>
-                        <div className="flex items-center p-2 rounded-md hover:bg-blue-100 transition-colors cursor-pointer">
+                        <div className="flex items-center p-1.5 sm:p-2 rounded-md hover:bg-blue-100 transition-colors cursor-pointer">
                           <input
                             type="radio" 
                             id="payOnline"
@@ -313,10 +310,10 @@ export default function BookingPage() {
                             value="payOnline"
                             checked={paymentMethod === 'payOnline'}
                             onChange={() => setPaymentMethod('payOnline')}
-                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                            className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
                           />
                           <label htmlFor="payOnline" className="ml-2 text-xs font-medium text-gray-700 flex items-center">
-                            <FaCreditCard className="mr-1 text-blue-500 text-sm" />
+                            <FaCreditCard className="mr-1 text-blue-500 text-xs sm:text-sm" />
                             Pay Online Now
                           </label>
                         </div>
@@ -326,23 +323,22 @@ export default function BookingPage() {
                 </div>
               </div>
 
-              <div className="md:w-2/3 p-6">
-                <div className="mb-6">
-                  <h2 className="text-xl font-bold text-gray-900 mb-1">Appointment Details</h2>
-                  <p className="text-gray-500 text-sm">Fill in your details to book an appointment with Dr. {doctor.firstName}</p>
+              <div className="md:w-2/3 p-4 sm:p-6">
+                <div className="mb-4 sm:mb-6">
+                  <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-1">Appointment Details</h2>
+                  <p className="text-gray-500 text-xs sm:text-sm">Fill in your details to book an appointment with Dr. {doctor.firstName}</p>
                 </div>
                 
                 <form onSubmit={handleSubmit}>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              
-                    <div className="bg-white p-4 rounded-lg shadow-xs border border-gray-200">
-                      <label className="text-m font-medium text-gray-700 mb-2 flex items-center">
-                        <FaCalendarAlt className="text-blue-500 mr-2 text-sm" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                    <div className="bg-white p-3 sm:p-4 rounded-lg shadow-xs border border-gray-200">
+                      <label className="text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2 flex items-center">
+                        <FaCalendarAlt className="text-blue-500 mr-2 text-xs sm:text-sm" />
                         Select Date
                       </label>
                       <input
                         type="date"
-                        className="w-full p-2 text-sm border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                        className="w-full p-2 text-xs sm:text-sm border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                         min={new Date().toISOString().split('T')[0]}
                         value={selectedDate}
                         onChange={(e) => setSelectedDate(e.target.value)}
@@ -350,14 +346,14 @@ export default function BookingPage() {
                       />
                     </div>
 
-                    <div className="bg-white p-4 rounded-lg shadow-xs border border-gray-200">
-                      <label className="text-m font-medium text-gray-700 mb-2 flex items-center">
-                        <FaClock className="text-blue-500 mr-2 text-sm" />
+                    <div className="bg-white p-3 sm:p-4 rounded-lg shadow-xs border border-gray-200">
+                      <label className="text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2 flex items-center">
+                        <FaClock className="text-blue-500 mr-2 text-xs sm:text-sm" />
                         Select Time
                       </label>
                       <div className="relative">
                         <select
-                          className="w-full p-2 text-sm border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none transition-all"
+                          className="w-full p-2 text-xs sm:text-sm border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none transition-all"
                           value={selectedTime}
                           onChange={(e) => setSelectedTime(e.target.value)}
                           required
@@ -370,7 +366,7 @@ export default function BookingPage() {
                         </select>
                         {calculatingSlots && (
                           <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                            <FaSpinner className="animate-spin text-gray-400 text-sm" />
+                            <FaSpinner className="animate-spin text-gray-400 text-xs sm:text-sm" />
                           </div>
                         )}
                       </div>
@@ -381,18 +377,17 @@ export default function BookingPage() {
                       )}
                     </div>
 
-                   
-                    <div className="md:col-span-2 bg-white p-4 rounded-lg shadow-xs border border-gray-200">
-                      <h3 className="text-md font-medium text-gray-900 mb-3 flex items-center">
-                        <FaUser className="text-blue-500 mr-2 text-lg" />
+                    <div className="md:col-span-2 bg-white p-3 sm:p-4 rounded-lg shadow-xs border border-gray-200">
+                      <h3 className="text-sm sm:text-md font-medium text-gray-900 mb-2 sm:mb-3 flex items-center">
+                        <FaUser className="text-blue-500 mr-2 text-sm sm:text-lg" />
                         Patient Information
                       </h3>
-                      <div className="space-y-3">
+                      <div className="space-y-2 sm:space-y-3">
                         <div>
-                          <label className="block text-m font-medium text-gray-700 mb-1">Full Name</label>
+                          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Full Name</label>
                           <input
                             type="text"
-                            className="w-full p-2 text-sm border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                            className="w-full p-2 text-xs sm:text-sm border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                             placeholder="Full Name"
                             value={patientName}
                             onChange={(e) => setPatientName(e.target.value)}
@@ -400,12 +395,12 @@ export default function BookingPage() {
                           />
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3">
                           <div>
-                            <label className="block text-m font-medium text-gray-700 mb-1">Phone Number</label>
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Phone Number</label>
                             <input
                               type="tel"
-                              className="w-full p-2 text-sm border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                              className="w-full p-2 text-xs sm:text-sm border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                               placeholder="+94 76 123 4567"
                               value={phoneNumber}
                               onChange={(e) => setPhoneNumber(e.target.value)}
@@ -414,10 +409,10 @@ export default function BookingPage() {
                           </div>
 
                           <div>
-                            <label className="block text-m font-medium text-gray-700 mb-1">Email Address</label>
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Email Address</label>
                             <input
                               type="email"
-                              className="w-full p-2 text-sm border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                              className="w-full p-2 text-xs sm:text-sm border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                               placeholder="email@example.com"
                               value={email}
                               onChange={(e) => setEmail(e.target.value)}
@@ -427,12 +422,11 @@ export default function BookingPage() {
                         </div>
 
                         <div>
-                          <label className="text-m font-medium text-gray-700 mb-1 flex items-center">
-                           
+                          <label className="text-xs sm:text-sm font-medium text-gray-700 mb-1 flex items-center">
                             Additional Notes
                           </label>
                           <textarea
-                            className="w-full p-2 text-sm border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                            className="w-full p-2 text-xs sm:text-sm border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                             rows="2"
                             placeholder="Any special requirements or notes for the doctor"
                             value={notes}
@@ -443,12 +437,12 @@ export default function BookingPage() {
                     </div>
                   </div>
 
-                  <div className="mt-6 bg-blue-50 p-4 rounded-lg border border-blue-200">
-                    <h3 className="font-semibold text-blue-800 mb-3 text-md">Appointment Summary</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
+                  <div className="mt-4 sm:mt-6 bg-blue-50 p-3 sm:p-4 rounded-lg border border-blue-200">
+                    <h3 className="font-semibold text-blue-800 mb-2 sm:mb-3 text-sm sm:text-md">Appointment Summary</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                      <div className="space-y-1 sm:space-y-2">
                         {selectedDate && (
-                          <p className="text-gray-700 text-sm">
+                          <p className="text-gray-700 text-xs sm:text-sm">
                             <span className="font-medium text-gray-900">Date:</span> {new Date(selectedDate).toLocaleDateString('en-US', { 
                               weekday: 'short', 
                               year: 'numeric', 
@@ -458,30 +452,30 @@ export default function BookingPage() {
                           </p>
                         )}
                         {selectedTime && (
-                          <p className="text-gray-700 text-sm">
+                          <p className="text-gray-700 text-xs sm:text-sm">
                             <span className="font-medium text-gray-900">Time:</span> {selectedTime.split('-').join(' - ')}
                           </p>
                         )}
                         {doctor && (
-                          <p className="text-gray-700 text-sm">
+                          <p className="text-gray-700 text-xs sm:text-sm">
                             <span className="font-medium text-gray-900">Doctor:</span> Dr. {doctor.firstName} {doctor.lastName}
                           </p>
                         )}
-                        <p className="text-gray-700 text-sm">
+                        <p className="text-gray-700 text-xs sm:text-sm">
                           <span className="font-medium text-gray-900">Payment:</span> {paymentMethod === 'payAtClinic' ? 'Pay at Clinic' : 'Pay Online Now'}
                         </p>
-                        <p className="text-gray-700 text-sm">
+                        <p className="text-gray-700 text-xs sm:text-sm">
                           <span className="font-medium text-gray-900">Fee:</span> Rs.{doctor.consultationFee || 120}
                         </p>
                       </div>
                       <div className="flex flex-col justify-end">
                         <button
                           type="submit"
-                          className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-4 py-3 rounded-lg font-bold shadow-sm hover:shadow-md transition-all disabled:opacity-50 flex items-center justify-center text-sm"
+                          className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-4 py-2 sm:py-3 rounded-lg font-bold shadow-sm hover:shadow-md transition-all disabled:opacity-50 flex items-center justify-center text-xs sm:text-sm"
                           disabled={!selectedDate || !selectedTime || !patientName || !phoneNumber || !email}
                         >
                           Confirm Appointment
-                          <FaArrowLeft className="ml-2 transform rotate-180 text-sm" />
+                          <FaArrowLeft className="ml-2 transform rotate-180 text-xs sm:text-sm" />
                         </button>
                       </div>
                     </div>
