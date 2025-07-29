@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function NavSlider({ closeSlider }) {
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-80 z-50 lg:hidden">
-      <div className="absolute right-0 w-80 h-full bg-gradient-to-b from-blue-600 to-blue-500 shadow-xl">
+      <div className="absolute right-0 w-80 h-full bg-blue-700 shadow-xl">
         <div className="flex justify-between items-center p-4 border-b border-blue-400">
           <div className="flex items-center">
           
