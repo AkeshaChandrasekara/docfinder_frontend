@@ -18,6 +18,7 @@ import BookingPage from './pages/BookingPage'
 import BookingConfirmation from './pages/BookingConfirmation'
 import MyAppointments from './pages/MyAppointments'
 import AppointmentDetails from './pages/AppointmentDetails'
+import PaymentSuccess from './pages/PaymentSuccess'
 
 
 
@@ -50,6 +51,7 @@ function App() {
    <Route path="/booking-confirmation/:id" element={<BookingConfirmation />} />
    <Route path="/my-appointments" element={<MyAppointments />} />
     <Route path="/appointment-details/:id" element={<AppointmentDetails />} />
+    <Route path="/payment-success" element={<PaymentSuccess />} />
 
 
        

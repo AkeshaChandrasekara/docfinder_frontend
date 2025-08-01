@@ -23,6 +23,9 @@ import axios from 'axios';
 import Header from '../components/header';
 import Footer from '../components/footer';
 import { toast } from 'react-hot-toast';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY || '');
 
 export default function BookingPage() {
   const { id } = useParams();
@@ -39,6 +42,7 @@ export default function BookingPage() {
   const [availableSlots, setAvailableSlots] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState('payAtClinic');
   const [calculatingSlots, setCalculatingSlots] = useState(false);
+  const [processingPayment, setProcessingPayment] = useState(false);
 
   useEffect(() => {
     const fetchDoctor = async () => {
@@ -109,35 +113,44 @@ export default function BookingPage() {
     }
   }, [selectedDate, doctor]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  if (!selectedDate || !selectedTime) {
+    toast.error('Please select both date and time');
+    return;
+  }
+
+  try {
+    const [startTime, endTime] = selectedTime.split('-');
+    const slotData = availableSlots.find(slot => slot.value === selectedTime)?.rawSlot;
+
+    const appointmentData = {
+      doctorId: id,
+      date: selectedDate,
+      time: selectedTime,
+      startTime,
+      endTime,
+      patientName,
+      phoneNumber,
+      email,
+      notes,
+      paymentMethod,
+      consultationFee: doctor.consultationFee
+    };
+
+    const token = localStorage.getItem('token');
     
-    if (!selectedDate || !selectedTime) {
-      toast.error('Please select both date and time');
-      return;
-    }
-
-    try {
-      const [startTime, endTime] = selectedTime.split('-');
-      const slotData = availableSlots.find(slot => slot.value === selectedTime)?.rawSlot;
-
-      const appointmentData = {
-        doctorId: id,
-        date: selectedDate,
-        time: selectedTime,
-        startTime,
-        endTime,
-        patientName,
-        phoneNumber,
-        email,
-        notes,
-        paymentMethod,
-      };
-
-      const token = localStorage.getItem('token');
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/appointments`, 
-        appointmentData, 
+    if (paymentMethod === 'payOnline') {
+      setProcessingPayment(true);
+      
+      const paymentIntentResponse = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/payments/create-payment-intent`,
+        {
+          amount: doctor.consultationFee * 100,
+          doctorId: id,
+          appointmentData
+        },
         {
           headers: { 
             Authorization: `Bearer ${token}`,
@@ -146,21 +159,46 @@ export default function BookingPage() {
         }
       );
 
-      toast.success('Appointment booked successfully!');
-      navigate(`/booking-confirmation/${response.data.data._id}`);
-    } catch (err) {
-      console.error('Error booking appointment:', err);
-      const errorMsg = err.response?.data?.message || 'Failed to book appointment';
-      toast.error(errorMsg);
+      const stripe = await stripePromise;
       
-      if (err.response?.data?.code === 'SLOT_UNAVAILABLE') {
-        setSelectedTime('');
-        const dayOfWeek = new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long' });
-        toast(`Refreshing availability for ${dayOfWeek}...`);
-      }
-    }
-  };
+      const result = await stripe.redirectToCheckout({
+        sessionId: paymentIntentResponse.data.sessionId
+      });
 
+      if (result.error) {
+        toast.error(result.error.message);
+        setProcessingPayment(false);
+      }
+      
+      return;
+    }
+
+    const response = await axios.post(
+      `${import.meta.env.VITE_BACKEND_URL}/api/appointments`, 
+      appointmentData, 
+      {
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    toast.success('Appointment booked successfully!');
+    navigate(`/booking-confirmation/${response.data.data._id}`);
+  } catch (err) {
+    console.error('Error booking appointment:', err);
+    const errorMsg = err.response?.data?.message || 'Failed to book appointment';
+    toast.error(errorMsg);
+    setProcessingPayment(false);
+    
+    if (err.response?.data?.code === 'SLOT_UNAVAILABLE') {
+      setSelectedTime('');
+      const dayOfWeek = new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long' });
+      toast(`Refreshing availability for ${dayOfWeek}...`);
+    }
+  }
+};
   if (loading) {
     return (
       <div className="flex flex-col min-h-screen bg-gray-50">
@@ -472,10 +510,19 @@ export default function BookingPage() {
                         <button
                           type="submit"
                           className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-4 py-2 sm:py-3 rounded-lg font-bold shadow-sm hover:shadow-md transition-all disabled:opacity-50 flex items-center justify-center text-xs sm:text-sm"
-                          disabled={!selectedDate || !selectedTime || !patientName || !phoneNumber || !email}
+                          disabled={!selectedDate || !selectedTime || !patientName || !phoneNumber || !email || processingPayment}
                         >
-                          Confirm Appointment
-                          <FaArrowLeft className="ml-2 transform rotate-180 text-xs sm:text-sm" />
+                          {processingPayment ? (
+                            <>
+                              <FaSpinner className="animate-spin mr-2" />
+                              Processing Payment...
+                            </>
+                          ) : (
+                            <>
+                              Confirm Appointment
+                              <FaArrowLeft className="ml-2 transform rotate-180 text-xs sm:text-sm" />
+                            </>
+                          )}
                         </button>
                       </div>
                     </div>
