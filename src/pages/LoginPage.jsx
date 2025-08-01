@@ -183,17 +183,17 @@ export default function LoginPage() {
                 transition={{ delay: 0.2 }}
               >
                 <div className="flex items-center">
-                  <motion.div whileTap={{ scale: 0.95 }}>
+                  <motion.div whileTap={{ scale: 0.95 }} className="flex items-center">
                     <input
                       id="remember-me"
                       name="remember-me"
                       type="checkbox"
-                      className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 focus:ring-blue-500 rounded border-gray-300"
+                      className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 focus:ring-blue-500 rounded border-gray-300 relative top-[1px]"
                     />
+                    <label htmlFor="remember-me" className="ml-2 block text-xs sm:text-sm text-gray-600 select-none">
+                      Remember me
+                    </label>
                   </motion.div>
-                  <label htmlFor="remember-me" className="ml-2 block text-xs sm:text-sm text-gray-600">
-                    Remember me
-                  </label>
                 </div>
                 <motion.div whileHover={{ scale: 1.05 }}>
                   <Link to="/forgot-password" className="text-xs sm:text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors">
