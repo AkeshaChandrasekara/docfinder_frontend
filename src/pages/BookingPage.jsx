@@ -114,109 +114,122 @@ export default function BookingPage() {
   }, [selectedDate, doctor]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!selectedDate || !selectedTime) {
-      toast.error('Please select both date and time');
-      return;
-    }
-
-    if (!patientName || !phoneNumber || !email) {
-      toast.error('Please fill in all required patient information');
-      return;
-    }
-
-    try {
-      const [startTime, endTime] = selectedTime.split('-');
-      const slotData = availableSlots.find(slot => slot.value === selectedTime)?.rawSlot;
-
-      const appointmentData = {
-        doctorId: id,
-        date: selectedDate,
-        time: selectedTime,
-        startTime,
-        endTime,
-        patientName,
-        phoneNumber,
-        email,
-        notes,
-        paymentMethod,
-        consultationFee: doctor.consultationFee
-      };
-
-      const token = localStorage.getItem('token');
-      
-      if (paymentMethod === 'payOnline') {
-        setProcessingPayment(true);
-        
-        try {
-          const paymentIntentResponse = await axios.post(
-            `${import.meta.env.VITE_BACKEND_URL}/api/payments/create-payment-intent`,
-            {
-              amount: Math.round(doctor.consultationFee * 100), // Convert to cents
-              doctorId: id,
-              appointmentData
-            },
-            {
-              headers: { 
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json'
-              }
-            }
-          );
-
-          if (!paymentIntentResponse.data.success) {
-            throw new Error(paymentIntentResponse.data.message || 'Payment failed');
-          }
-
-          const stripe = await stripePromise;
-          
-          const result = await stripe.redirectToCheckout({
-            sessionId: paymentIntentResponse.data.sessionId
-          });
-
-          if (result.error) {
-            throw new Error(result.error.message);
-          }
-        } catch (err) {
-          console.error('Payment error:', err);
-          toast.error(err.response?.data?.message || err.message || 'Payment processing failed');
-          setProcessingPayment(false);
-        }
-        return;
-      }
-
+  e.preventDefault();
   
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/appointments`, 
-        appointmentData, 
-        {
-          headers: { 
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
+  if (!selectedDate || !selectedTime) {
+    toast.error('Please select both date and time');
+    return;
+  }
 
-      if (!response.data.success) {
-        throw new Error(response.data.message || 'Booking failed');
-      }
+  if (!patientName || !phoneNumber || !email) {
+    toast.error('Please fill in all required patient information');
+    return;
+  }
 
-      toast.success('Appointment booked successfully!');
-      navigate(`/booking-confirmation/${response.data.data._id}`);
-    } catch (err) {
-      console.error('Error booking appointment:', err);
-      const errorMsg = err.response?.data?.message || 'Failed to book appointment';
-      toast.error(errorMsg);
-      setProcessingPayment(false);
+  try {
+    const [startTime, endTime] = selectedTime.split('-');
+    const slotData = availableSlots.find(slot => slot.value === selectedTime)?.rawSlot;
+
+    const appointmentData = {
+      doctorId: id,
+      date: selectedDate,
+      time: selectedTime,
+      startTime,
+      endTime,
+      patientName,
+      phoneNumber,
+      email,
+      notes,
+      paymentMethod,
+      consultationFee: doctor.consultationFee
+    };
+
+    const token = localStorage.getItem('token');
+    
+    if (paymentMethod === 'payOnline') {
+      setProcessingPayment(true);
       
-      if (err.response?.data?.code === 'SLOT_UNAVAILABLE') {
-        setSelectedTime('');
-        const dayOfWeek = new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long' });
-        toast(`Refreshing availability for ${dayOfWeek}...`);
+      try {
+        console.log('Creating payment intent...');
+        const paymentIntentResponse = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/api/payments/create-payment-intent`,
+          {
+            amount: Math.round(doctor.consultationFee * 100), 
+            doctorId: id,
+            appointmentData
+          },
+          {
+            headers: { 
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+
+        if (!paymentIntentResponse.data.success) {
+          throw new Error(paymentIntentResponse.data.message || 'Payment failed');
+        }
+
+        console.log('Redirecting to Stripe checkout...');
+        const stripe = await stripePromise;
+        
+        const result = await stripe.redirectToCheckout({
+          sessionId: paymentIntentResponse.data.sessionId
+        });
+
+        if (result.error) {
+          throw new Error(result.error.message);
+        }
+      } catch (err) {
+        console.error('Payment error:', err);
+        let errorMessage = 'Payment processing failed';
+        
+        if (err.response) {
+          errorMessage = err.response.data?.message || errorMessage;
+          console.error('Server response:', err.response.data);
+        } else if (err.request) {
+          errorMessage = 'No response from server';
+          console.error('No response received:', err.request);
+        } else {
+          errorMessage = err.message || errorMessage;
+          console.error('Request setup error:', err.message);
+        }
+        
+        toast.error(errorMessage);
+        setProcessingPayment(false);
       }
+      return;
     }
-  };
+    const response = await axios.post(
+      `${import.meta.env.VITE_BACKEND_URL}/api/appointments`, 
+      appointmentData, 
+      {
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    if (!response.data.success) {
+      throw new Error(response.data.message || 'Booking failed');
+    }
+
+    toast.success('Appointment booked successfully!');
+    navigate(`/booking-confirmation/${response.data.data._id}`);
+  } catch (err) {
+    console.error('Error booking appointment:', err);
+    const errorMsg = err.response?.data?.message || 'Failed to book appointment';
+    toast.error(errorMsg);
+    setProcessingPayment(false);
+    
+    if (err.response?.data?.code === 'SLOT_UNAVAILABLE') {
+      setSelectedTime('');
+      const dayOfWeek = new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long' });
+      toast(`Refreshing availability for ${dayOfWeek}...`);
+    }
+  }
+};
 
   if (loading) {
     return (
