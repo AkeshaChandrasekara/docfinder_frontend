@@ -8,16 +8,23 @@ import Footer from '../components/footer';
 export default function PaymentSuccess() {
   const navigate = useNavigate();
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const session_id = searchParams.get('session_id');
 
   useEffect(() => {
     const verifyPayment = async () => {
       try {
-        if (!session_id || session_id === '{CHECKOUT_SESSION_ID}') {
-          throw new Error('Invalid session ID');
+        const searchParams = new URLSearchParams(location.search);
+        const session_id = searchParams.get('session_id');
+        
+        console.log('Payment success page loaded with session_id:', session_id);
+
+        if (!session_id) {
+          throw new Error('Missing session ID parameter');
+        }
+        if (session_id.includes('CHECKOUT_SESSION_ID')) {
+          throw new Error('Placeholder session ID received - payment may not have completed');
         }
 
+        console.log('Verifying payment with backend...');
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/api/payments/success`,
           {
@@ -29,19 +36,32 @@ export default function PaymentSuccess() {
         );
 
         if (response.data.success && response.data.appointmentId) {
+          console.log('Payment verified successfully, redirecting to confirmation');
           navigate(`/booking-confirmation/${response.data.appointmentId}`);
         } else {
-          throw new Error(response.data.message || 'Failed to get appointment details');
+          throw new Error(response.data.message || 'Failed to verify payment');
         }
       } catch (error) {
-        console.error('Payment verification failed:', error);
-        toast.error(error.response?.data?.message || 'Payment verification failed');
+        console.error('Payment verification error:', {
+          message: error.message,
+          response: error.response?.data,
+          stack: error.stack
+        });
+        
+        let errorMessage = 'Payment verification failed';
+        if (error.response?.data?.message) {
+          errorMessage = error.response.data.message;
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+        
+        toast.error(errorMessage);
         navigate('/doctors');
       }
     };
 
     verifyPayment();
-  }, [session_id, navigate]);
+  }, [location.search, navigate]);
 
   return (
     <div className="flex flex-col min-h-screen">
