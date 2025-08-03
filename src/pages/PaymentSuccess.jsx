@@ -13,15 +13,22 @@ export default function PaymentSuccess() {
     const verifyPayment = async () => {
       try {
         const searchParams = new URLSearchParams(location.search);
-        const session_id = searchParams.get('session_id');
+        let session_id = searchParams.get('session_id');
         
         console.log('Payment success page loaded with session_id:', session_id);
 
         if (!session_id) {
           throw new Error('Missing session ID parameter');
         }
+
         if (session_id.includes('CHECKOUT_SESSION_ID')) {
-          throw new Error('Placeholder session ID received - payment may not have completed');
+          const stripeSessionId = localStorage.getItem('stripe_session_id');
+          if (stripeSessionId) {
+            session_id = stripeSessionId;
+            console.log('Using session ID from localStorage:', session_id);
+          } else {
+            throw new Error('Placeholder session ID received - payment may not have completed');
+          }
         }
 
         console.log('Verifying payment with backend...');
@@ -37,6 +44,7 @@ export default function PaymentSuccess() {
 
         if (response.data.success && response.data.appointmentId) {
           console.log('Payment verified successfully, redirecting to confirmation');
+          localStorage.removeItem('stripe_session_id');
           navigate(`/booking-confirmation/${response.data.appointmentId}`);
         } else {
           throw new Error(response.data.message || 'Failed to verify payment');
@@ -70,6 +78,9 @@ export default function PaymentSuccess() {
         <div className="text-center p-6 max-w-md">
           <h2 className="text-xl font-bold mb-4">Processing Your Payment</h2>
           <p>Please wait while we verify your payment...</p>
+          <div className="mt-4 flex justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
         </div>
       </main>
       <Footer />
