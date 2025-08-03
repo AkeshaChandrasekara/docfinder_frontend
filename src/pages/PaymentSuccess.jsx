@@ -11,38 +11,37 @@ export default function PaymentSuccess() {
   const searchParams = new URLSearchParams(location.search);
   const session_id = searchParams.get('session_id');
 
-
-useEffect(() => {
-  const verifyPayment = async () => {
-    try {
-      if (!session_id || session_id === '{CHECKOUT_SESSION_ID}') {
-        throw new Error('Invalid session ID');
-      }
-
-      const response = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/payments/success`,
-        {
-          params: { session_id },
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+  useEffect(() => {
+    const verifyPayment = async () => {
+      try {
+        if (!session_id || session_id === '{CHECKOUT_SESSION_ID}') {
+          throw new Error('Invalid session ID');
         }
-      );
 
-      if (response.data.success && response.data.appointmentId) {
-        navigate(`/booking-confirmation/${response.data.appointmentId}`);
-      } else {
-        throw new Error('Failed to get appointment details');
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/payments/success`,
+          {
+            params: { session_id },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+          }
+        );
+
+        if (response.data.success && response.data.appointmentId) {
+          navigate(`/booking-confirmation/${response.data.appointmentId}`);
+        } else {
+          throw new Error(response.data.message || 'Failed to get appointment details');
+        }
+      } catch (error) {
+        console.error('Payment verification failed:', error);
+        toast.error(error.response?.data?.message || 'Payment verification failed');
+        navigate('/doctors');
       }
-    } catch (error) {
-      console.error('Payment verification failed:', error);
-      toast.error(error.response?.data?.message || 'Payment verification failed');
-      navigate('/doctors');
-    }
-  };
+    };
 
-  verifyPayment();
-}, [session_id, navigate]);
+    verifyPayment();
+  }, [session_id, navigate]);
 
   return (
     <div className="flex flex-col min-h-screen">

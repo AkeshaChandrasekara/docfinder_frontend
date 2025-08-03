@@ -113,44 +113,83 @@ export default function BookingPage() {
     }
   }, [selectedDate, doctor]);
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  
-  if (!selectedDate || !selectedTime) {
-    toast.error('Please select both date and time');
-    return;
-  }
-
-  try {
-    const [startTime, endTime] = selectedTime.split('-');
-    const slotData = availableSlots.find(slot => slot.value === selectedTime)?.rawSlot;
-
-    const appointmentData = {
-      doctorId: id,
-      date: selectedDate,
-      time: selectedTime,
-      startTime,
-      endTime,
-      patientName,
-      phoneNumber,
-      email,
-      notes,
-      paymentMethod,
-      consultationFee: doctor.consultationFee
-    };
-
-    const token = localStorage.getItem('token');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     
-    if (paymentMethod === 'payOnline') {
-      setProcessingPayment(true);
+    if (!selectedDate || !selectedTime) {
+      toast.error('Please select both date and time');
+      return;
+    }
+
+    if (!patientName || !phoneNumber || !email) {
+      toast.error('Please fill in all required patient information');
+      return;
+    }
+
+    try {
+      const [startTime, endTime] = selectedTime.split('-');
+      const slotData = availableSlots.find(slot => slot.value === selectedTime)?.rawSlot;
+
+      const appointmentData = {
+        doctorId: id,
+        date: selectedDate,
+        time: selectedTime,
+        startTime,
+        endTime,
+        patientName,
+        phoneNumber,
+        email,
+        notes,
+        paymentMethod,
+        consultationFee: doctor.consultationFee
+      };
+
+      const token = localStorage.getItem('token');
       
-      const paymentIntentResponse = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/payments/create-payment-intent`,
-        {
-          amount: doctor.consultationFee * 100,
-          doctorId: id,
-          appointmentData
-        },
+      if (paymentMethod === 'payOnline') {
+        setProcessingPayment(true);
+        
+        try {
+          const paymentIntentResponse = await axios.post(
+            `${import.meta.env.VITE_BACKEND_URL}/api/payments/create-payment-intent`,
+            {
+              amount: Math.round(doctor.consultationFee * 100), // Convert to cents
+              doctorId: id,
+              appointmentData
+            },
+            {
+              headers: { 
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              }
+            }
+          );
+
+          if (!paymentIntentResponse.data.success) {
+            throw new Error(paymentIntentResponse.data.message || 'Payment failed');
+          }
+
+          const stripe = await stripePromise;
+          
+          const result = await stripe.redirectToCheckout({
+            sessionId: paymentIntentResponse.data.sessionId
+          });
+
+          if (result.error) {
+            throw new Error(result.error.message);
+          }
+        } catch (err) {
+          console.error('Payment error:', err);
+          toast.error(err.response?.data?.message || err.message || 'Payment processing failed');
+          setProcessingPayment(false);
+        }
+        return;
+      }
+
+  
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/appointments`, 
+        appointmentData, 
         {
           headers: { 
             Authorization: `Bearer ${token}`,
@@ -159,46 +198,26 @@ const handleSubmit = async (e) => {
         }
       );
 
-      const stripe = await stripePromise;
-      
-      const result = await stripe.redirectToCheckout({
-        sessionId: paymentIntentResponse.data.sessionId
-      });
-
-      if (result.error) {
-        toast.error(result.error.message);
-        setProcessingPayment(false);
+      if (!response.data.success) {
+        throw new Error(response.data.message || 'Booking failed');
       }
+
+      toast.success('Appointment booked successfully!');
+      navigate(`/booking-confirmation/${response.data.data._id}`);
+    } catch (err) {
+      console.error('Error booking appointment:', err);
+      const errorMsg = err.response?.data?.message || 'Failed to book appointment';
+      toast.error(errorMsg);
+      setProcessingPayment(false);
       
-      return;
-    }
-
-    const response = await axios.post(
-      `${import.meta.env.VITE_BACKEND_URL}/api/appointments`, 
-      appointmentData, 
-      {
-        headers: { 
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+      if (err.response?.data?.code === 'SLOT_UNAVAILABLE') {
+        setSelectedTime('');
+        const dayOfWeek = new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long' });
+        toast(`Refreshing availability for ${dayOfWeek}...`);
       }
-    );
-
-    toast.success('Appointment booked successfully!');
-    navigate(`/booking-confirmation/${response.data.data._id}`);
-  } catch (err) {
-    console.error('Error booking appointment:', err);
-    const errorMsg = err.response?.data?.message || 'Failed to book appointment';
-    toast.error(errorMsg);
-    setProcessingPayment(false);
-    
-    if (err.response?.data?.code === 'SLOT_UNAVAILABLE') {
-      setSelectedTime('');
-      const dayOfWeek = new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long' });
-      toast(`Refreshing availability for ${dayOfWeek}...`);
     }
-  }
-};
+  };
+
   if (loading) {
     return (
       <div className="flex flex-col min-h-screen bg-gray-50">
@@ -422,7 +441,7 @@ const handleSubmit = async (e) => {
                       </h3>
                       <div className="space-y-2 sm:space-y-3">
                         <div>
-                          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Full Name *</label>
                           <input
                             type="text"
                             className="w-full p-2 text-xs sm:text-sm border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
@@ -435,7 +454,7 @@ const handleSubmit = async (e) => {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3">
                           <div>
-                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
                             <input
                               type="tel"
                               className="w-full p-2 text-xs sm:text-sm border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
@@ -447,7 +466,7 @@ const handleSubmit = async (e) => {
                           </div>
 
                           <div>
-                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Email Address *</label>
                             <input
                               type="email"
                               className="w-full p-2 text-xs sm:text-sm border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
