@@ -69,7 +69,6 @@ export default function BookingPage() {
         setDoctor(normalizedDoctor);
         setLoading(false);
       } catch (err) {
-        console.error('Error fetching doctor:', err);
         setError(err.response?.data?.message || 'Failed to load doctor data');
         toast.error(err.response?.data?.message || 'Failed to load doctor data');
         setLoading(false);
@@ -180,18 +179,17 @@ export default function BookingPage() {
             throw new Error(error.message);
           }
         } catch (err) {
-          console.error('Payment error:', err);
           let errorMessage = 'Payment processing failed';
           
           if (err.response) {
             errorMessage = err.response.data?.message || errorMessage;
-            console.error('Server response:', err.response.data);
+          
           } else if (err.request) {
             errorMessage = 'No response from server';
-            console.error('No response received:', err.request);
+          
           } else {
             errorMessage = err.message || errorMessage;
-            console.error('Request setup error:', err.message);
+           
           }
           
           toast.error(errorMessage);
@@ -219,7 +217,6 @@ export default function BookingPage() {
       toast.success('Appointment booked successfully!');
       navigate(`/booking-confirmation/${response.data.data._id}`);
     } catch (err) {
-      console.error('Error booking appointment:', err);
       const errorMsg = err.response?.data?.message || 'Failed to book appointment';
       toast.error(errorMsg);
       setProcessingPayment(false);

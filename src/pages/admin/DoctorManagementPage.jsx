@@ -27,7 +27,7 @@ export default function DoctorManagementPage() {
       });
       fetchDoctors();
     } catch (error) {
-      console.error('Error deleting doctor:', error);
+      
     }
   };
 

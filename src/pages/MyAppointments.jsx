@@ -49,7 +49,6 @@ export default function MyAppointments() {
         setAppointments(response.data.data);
         setLoading(false);
       } catch (err) {
-        console.error('Error fetching appointments:', err);
         setError(err.response?.data?.message || 'Failed to load appointments');
         toast.error(err.response?.data?.message || 'Failed to load appointments');
         setLoading(false);

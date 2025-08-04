@@ -65,7 +65,6 @@ export default function ContactPage() {
         toast.error('Failed to send message. Please try again.');
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
       setSubmitStatus('error');
       toast.error('An error occurred. Please try again later.');
     } finally {

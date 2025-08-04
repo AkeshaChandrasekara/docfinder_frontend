@@ -101,7 +101,6 @@ export default function EditDoctorForm() {
       );
       setChanellingCenters(response.data.data || response.data);
     } catch (error) {
-      console.error("Error fetching chanelling centers:", error);
       toast.error(error.response?.data?.message || "Failed to load chanelling centers");
     }
   };

@@ -49,7 +49,6 @@ export default function AdminAppointmentsPage() {
         setAppointments(response.data.data);
         setLoading(false);
       } catch (err) {
-        console.error('Error fetching appointments:', err);
         setError(err.response?.data?.message || 'Failed to load appointments');
         toast.error(err.response?.data?.message || 'Failed to load appointments');
         setLoading(false);
@@ -124,7 +123,6 @@ export default function AdminAppointmentsPage() {
     setEditingStatus(null);
     setNewStatus('');
   } catch (err) {
-    console.error('Error updating appointment:', err);
     const errorMessage = err.response?.data?.message || 'Failed to update appointment';
     toast.error(errorMessage);
     if (err.response?.status === 404) {

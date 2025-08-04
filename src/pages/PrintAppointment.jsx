@@ -43,7 +43,6 @@ export default function PrintAppointment() {
         setAppointment(response.data.data);
         setLoading(false);
       } catch (err) {
-        console.error('Error fetching appointment:', err);
         toast.error(err.response?.data?.message || 'Failed to load appointment data');
         setLoading(false);
       }

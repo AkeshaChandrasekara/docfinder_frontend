@@ -61,7 +61,6 @@ export default function DoctorProfile() {
 
         setDoctor(normalizedDoctor);
       } catch (err) {
-        console.error('Error fetching doctor:', err);
         setError(err.response?.data?.message || 'Failed to load doctor profile. Please try again later.');
         toast.error(err.response?.data?.message || 'Failed to load doctor profile');
       } finally {

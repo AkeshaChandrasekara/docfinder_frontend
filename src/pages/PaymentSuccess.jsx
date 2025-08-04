@@ -15,7 +15,7 @@ export default function PaymentSuccess() {
         const searchParams = new URLSearchParams(location.search);
         let session_id = searchParams.get('session_id');
         
-        console.log('Payment success page loaded with session_id:', session_id);
+        
 
         if (!session_id) {
           throw new Error('Missing session ID parameter');
@@ -25,7 +25,6 @@ export default function PaymentSuccess() {
           const stripeSessionId = localStorage.getItem('stripe_session_id');
           if (stripeSessionId) {
             session_id = stripeSessionId;
-            console.log('Using session ID from localStorage:', session_id);
           } else {
             throw new Error('Placeholder session ID received - payment may not have completed');
           }
@@ -43,7 +42,6 @@ export default function PaymentSuccess() {
         );
 
         if (response.data.success && response.data.appointmentId) {
-          console.log('Payment verified successfully, redirecting to confirmation');
           localStorage.removeItem('stripe_session_id');
           navigate(`/booking-confirmation/${response.data.appointmentId}`);
         } else {

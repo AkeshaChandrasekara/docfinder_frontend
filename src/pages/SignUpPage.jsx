@@ -75,7 +75,7 @@ export default function SignUpPage() {
       }
     }).catch((error) => {
       toast.error(error.response?.data?.message || "Signup failed");
-      console.error("Signup error:", error);
+
     });
   };
 

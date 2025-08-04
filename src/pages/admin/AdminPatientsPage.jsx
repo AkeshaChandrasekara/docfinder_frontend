@@ -66,7 +66,6 @@ export default function AdminPatientsPage() {
         setPatients(Array.from(patientsMap.values()));
         setLoading(false);
       } catch (err) {
-        console.error('Error fetching patients:', err);
         setError(err.response?.data?.message || 'Failed to load patients');
         toast.error(err.response?.data?.message || 'Failed to load patients');
         setLoading(false);

@@ -54,7 +54,6 @@ export default function AdminHomePage() {
         fetchDashboardStats(token);
       }
     }).catch((err) => {
-      console.error("User verification error:", err);
       toast.error("Session expired. Please login again.");
       localStorage.removeItem("token");
       navigate("/login");
@@ -106,7 +105,6 @@ export default function AdminHomePage() {
 
       setRecentActivities(recentAppointments);
     } catch (error) {
-      console.error("Error fetching stats:", error);
       toast.error("Failed to load dashboard statistics");
     }
   };

@@ -42,7 +42,6 @@ export default function AdminSpecialtiesPage() {
       setSpecialties(data);
       setError(null);
     } catch (error) {
-      console.error("Error fetching specialties:", error);
       setError("Failed to load specialties");
       toast.error("Failed to load specialties");
       setSpecialties([]);
@@ -67,7 +66,6 @@ export default function AdminSpecialtiesPage() {
       toast.success("Specialty deleted successfully");
       fetchSpecialties();
     } catch (error) {
-      console.error("Delete error:", error);
       toast.error(error.response?.data?.message || "Failed to delete specialty");
     }
   };

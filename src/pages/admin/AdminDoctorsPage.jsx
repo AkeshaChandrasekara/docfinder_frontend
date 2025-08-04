@@ -42,7 +42,6 @@ export default function AdminDoctorsPage() {
       
       setDoctors(data);
     } catch (error) {
-      console.error("Error fetching doctors:", error);
       toast.error("Failed to load doctors");
       setDoctors([]);
     } finally {
@@ -67,7 +66,6 @@ export default function AdminDoctorsPage() {
       toast.success("Doctor deleted successfully");
       fetchDoctors();
     } catch (error) {
-      console.error("Delete error:", error);
       toast.error(error.response?.data?.message || "Failed to delete doctor");
     }
   };

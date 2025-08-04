@@ -41,7 +41,6 @@ export default function AdminChanellingCentersPage() {
       setCenters(data);
       setError(null);
     } catch (error) {
-      console.error("Error fetching centers:", error);
       setError("Failed to load chanelling centers");
       toast.error("Failed to load chanelling centers");
       setCenters([]);
@@ -66,7 +65,6 @@ export default function AdminChanellingCentersPage() {
       toast.success("Chanelling center deleted successfully");
       fetchCenters();
     } catch (error) {
-      console.error("Delete error:", error);
       toast.error(error.response?.data?.message || "Failed to delete center");
     }
   };

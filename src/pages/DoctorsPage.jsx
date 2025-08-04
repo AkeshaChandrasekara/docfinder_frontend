@@ -40,7 +40,6 @@ export default function DoctorsPage() {
         });
         setVisibleDoctors(initialVisible);
       } catch (err) {
-        console.error('Error fetching data:', err);
         setError(err.response?.data?.message || 'Failed to load doctors data. Please try again later.');
         toast.error(err.response?.data?.message || 'Failed to load doctors data');
       } finally {
