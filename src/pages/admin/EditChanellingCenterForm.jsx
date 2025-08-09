@@ -110,7 +110,7 @@ export default function EditChanellingCenterForm() {
             type="submit"
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className={`px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-green-600 hover:bg-green-700 ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
+            className={`px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
           >
             {isSubmitting ? 'Updating...' : 'Update Center'}
           </button>
