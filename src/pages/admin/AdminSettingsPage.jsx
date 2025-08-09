@@ -420,7 +420,7 @@ export default function AdminSettingsPage() {
               <h3 className="text-xl font-medium text-gray-900 mb-2">
                 {activeTab === 'appearance' && 'Appearance Settings'}
                 {activeTab === 'notifications' && 'Notification Settings'}
-                {activeTab === 'users' && 'User Management Settings'}
+                {activeTab === 'users' && 'Admin Management Settings'}
               </h3>
               <p className="text-gray-500 max-w-md text-center">
                 This section is under development. Check back soon for more configuration options.
