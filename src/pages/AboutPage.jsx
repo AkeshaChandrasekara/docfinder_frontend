@@ -38,7 +38,7 @@ export default function AboutPage() {
     <div className="flex flex-col min-h-screen">
       <Header />
     
-      <section className="relative h-[40vh] sm:h-[50vh] bg-gradient-to-r from-blue-600 to-blue-500 overflow-hidden flex items-center">
+      <section className="relative h-[40vh] sm:h-[40vh] bg-gradient-to-r from-blue-600 to-blue-700 overflow-hidden flex items-center">
         <div className="absolute inset-0 bg-white/10"></div>
         <div className="container mx-auto px-4 sm:px-6 relative z-10 text-center">
           <motion.div
